@@ -11,38 +11,44 @@ struct ContentView: View {
     @EnvironmentObject var timerViewModel: TimerViewModel
     @EnvironmentObject var playerViewModel: PlayerViewModel
     
-    @Environment(\.dismiss) private var dismiss
-    
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Rectangle()
                     .fill(Color(red: 0.976, green: 0.961, blue: 0.878))
                     .ignoresSafeArea()
+                
                 VStack {
                     Spacer()
+                    
                     Text("BubblePop")
-                        .font(.largeTitle .bold())
+                        .font(.largeTitle.bold())
                         .foregroundColor(Color(red: 0.0078, green: 0.1882, blue: 0.2863))
                         .padding()
+                    
                     Spacer()
-                    NavigationLink(destination: SettingView(),
-                                   label: {
-                                           Text("Play")
-                                               .font(.title2)
-                                               .padding()
-                                               .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
-                                   })
-                    NavigationLink(destination: HighScoreView(),
-                                   label: {
-                                           Text("High Score")
-                                               .font(.title2)
-                                               .padding()
-                                               .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
-                                   })
+                    
+                    NavigationLink(destination: SettingView()) {
+                        Text("Play")
+                            .font(.title2)
+                            .padding()
+                            .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
+                    }
+                    .onAppear {
+                        playerViewModel.resetCurrentPlayer()
+                    }
+                    
+                    NavigationLink(destination: MainHighScoreView()) {
+                        Text("High Score")
+                            .font(.title2)
+                            .padding()
+                            .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
+                    }
+                    
                     Spacer()
                 }
             }
+            .navigationBarBackButtonHidden(true)
         }
         .tint(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
         .environmentObject(timerViewModel)
@@ -55,3 +61,4 @@ struct ContentView: View {
         .environmentObject(TimerViewModel())
         .environmentObject(PlayerViewModel())
 }
+

@@ -1,15 +1,14 @@
 //
-//  HighScoreView.swift
+//  MainHighScoreView.swift
 //  BubblePop
 //
-//  Created by Xinyi Hu on 10/4/2025.
+//  Created by Xinyi Hu on 26/4/2025.
 //
 
 import SwiftUI
 
-struct HighScoreView: View {
+struct MainHighScoreView: View {
     @EnvironmentObject var playerViewModel: PlayerViewModel
-    @EnvironmentObject var timerViewModel: TimerViewModel
     
     @Environment(\.dismiss) private var dismiss
     
@@ -28,31 +27,8 @@ struct HighScoreView: View {
                         .frame(height: 1)
                         .background(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
                         .padding(.horizontal, 20)
-                        .padding(.vertical, 10)
                     
                     Spacer()
-                    
-                    VStack{
-                        HStack{
-                            Text("Your Name:")
-                                .font(.title2)
-                                .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
-                            Text(playerViewModel.currentPlayer?.name ?? "Unknown")
-                                .font(.title2)
-                                .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
-                        }
-                        
-                        HStack{
-                            Text("Your Score:")
-                                .font(.title2)
-                                .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
-                            Text("0")
-                                .font(.title2)
-                                .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
-                        }
-                    }
-                    .padding(.vertical, 20)
-                    
                     
                     List {
                         ForEach(playerViewModel.players) {player in
@@ -81,12 +57,10 @@ struct HighScoreView: View {
         }
         .tint(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
         .environmentObject(playerViewModel)
-        .environmentObject(timerViewModel)
     }
 }
 
 #Preview {
-    HighScoreView()
+    MainHighScoreView()
         .environmentObject(PlayerViewModel())
-        .environmentObject(TimerViewModel())
 }

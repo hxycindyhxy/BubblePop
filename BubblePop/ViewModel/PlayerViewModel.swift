@@ -9,10 +9,16 @@ import Foundation
 
 
 class PlayerViewModel: ObservableObject {
+    @Published var currentPlayer: Player?
     @Published var players: [Player] = []
     
-    func addnewPlayer(player: Player) {
-        let newPlayer = Player(name: player.name, score: player.score)
-        players.append(newPlayer)
+    func resetCurrentPlayer() {
+            currentPlayer = nil
+        }
+    
+    func addNewPlayer(name: String, score: Int) {
+        let player = Player(name: name, score: score)
+        currentPlayer = player
+        players.append(player)
     }
 }

@@ -11,14 +11,14 @@ import Combine
 
 
 class TimerViewModel:ObservableObject {
-    @Published var gameTime: Double = 60
+//    @Published var gameTime: Double = 60
     @Published var remainTime: Int = 0
     @Published var isCountingDown = false
     @Published var isFinished = false
     
     private var timer: AnyCancellable?
     
-    func initTimer() {
+    func initTimer(gameTime: Double) {
         isFinished = false
         remainTime = Int(gameTime)
         isCountingDown = true

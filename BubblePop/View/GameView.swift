@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct GameView: View {
+    @Binding var gameTime: Double
     @EnvironmentObject var timerViewModel: TimerViewModel
+    @EnvironmentObject var playerViewModel: PlayerViewModel
     
     @Environment(\.dismiss) private var dismiss
     
@@ -24,7 +26,7 @@ struct GameView: View {
                                 .font(.title3)
                                 .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
                             Text(String(Int(timerViewModel.remainTime)))
-                                .font(.title3)
+                                .font(.title3 .bold())
                                 .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
                         }
                         .frame(maxWidth: .infinity)
@@ -35,18 +37,18 @@ struct GameView: View {
                                 .font(.title3)
                                 .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
                             Text("0")
-                                .font(.title3)
+                                .font(.title3 .bold())
                                 .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
                         }
                         .frame(maxWidth: .infinity)
                         .padding()
                         
                         VStack{
-                            Text("High Score")
+                            Text("Player")
                                 .font(.title3)
                                 .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
-                            Text("0")
-                                .font(.title3)
+                            Text(playerViewModel.currentPlayer?.name ?? "Unknown")
+                                .font(.title3 .bold())
                                 .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
                         }
                         .frame(maxWidth: .infinity)
@@ -67,17 +69,21 @@ struct GameView: View {
             }
             .navigationBarBackButtonHidden(true)
             .onAppear {
-                timerViewModel.initTimer()
+                timerViewModel.initTimer(gameTime: gameTime)
             }
             .environmentObject(timerViewModel)
             .fullScreenCover(isPresented: $timerViewModel.isFinished) {
                 HighScoreView()
+                    .onAppear {
+                        playerViewModel.currentPlayer?.score = 100
+                    }
             }
     }
 }
 
 
 #Preview {
-    GameView()
+    GameView(gameTime: .constant(60))
         .environmentObject(TimerViewModel())
+        .environmentObject(PlayerViewModel())
 }
