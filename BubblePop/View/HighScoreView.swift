@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// A view that displays the player's current score and a list of top high scores.
 struct HighScoreView: View {
     @EnvironmentObject var playerViewModel: PlayerViewModel
     @EnvironmentObject var timerViewModel: TimerViewModel
@@ -35,6 +36,7 @@ struct HighScoreView: View {
                         .frame(height: 120)
                         .opacity(0)
                     
+                    /// Display current player's name and score
                     VStack{
                         HStack{
                             Text("Your Name:")
@@ -59,7 +61,8 @@ struct HighScoreView: View {
                     Rectangle()
                         .frame(height: 10)
                         .opacity(0)
-                                        
+                    
+                    /// List of top three players and their scores
                     List {
                         ForEach(playerViewModel.topThreePlayers) {player in
                             HStack{
@@ -79,6 +82,7 @@ struct HighScoreView: View {
                     
                     Spacer()
                     
+                    /// Navigation link to  main page for the option of restarting the game
                     NavigationLink(destination: ContentView()) {
                         Text("Play Again")
                             .font(.title2.bold())

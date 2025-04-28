@@ -8,14 +8,17 @@
 import Foundation
 import SwiftUI
 
-enum BubbleType: CaseIterable {
-    case red, pink, green, blue, black
-}
-
+// A model representing a bubble displayed on the screen.
 struct Bubble: Identifiable {
     var id: UUID = UUID()
     var type: BubbleType
     var position: CGPoint
 }
+
+/// The available types of bubbles
+enum BubbleType: CaseIterable {
+    case red, pink, green, blue, black
+}
+
 
 

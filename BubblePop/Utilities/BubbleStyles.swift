@@ -7,7 +7,12 @@
 
 import SwiftUI
 
+// A utility struct that provides bubble style properties such as color, size, score, and random generation probability.
 struct BubbleStyle {
+    
+    /// Returns the color associated with a given bubble type.
+    /// - Parameter type: The type of the bubble.
+    /// - Returns: A `Color` corresponding to the specified bubble type.
     static func color(for type: BubbleType) -> Color {
         switch type {
         case .red: return Color(red: 0.898, green: 0.353, blue: 0.251)
@@ -18,10 +23,15 @@ struct BubbleStyle {
         }
     }
     
+    /// Returns the fixed size for a bubble, regardless of type.
+    /// - Parameter type: The type of the bubble (currently unused).
+    /// - Returns: A `CGSize` representing the width and height of a bubble.
     static func size(for type: BubbleType) -> CGSize {
         return CGSize(width: 55, height: 55)
     }
     
+    /// Randomly selects a bubble type based on predefined appearance probabilities.
+    /// - Returns: A randomly chosen `BubbleType`.
     static func randomType() -> BubbleType {
         var typePool: [BubbleType] = []
         typePool += Array(repeating: .red, count: 40)
@@ -33,6 +43,9 @@ struct BubbleStyle {
         return typePool.randomElement()!
     }
     
+    /// Returns the score value assigned to a specific bubble type.
+    /// - Parameter type: The type of the bubble.
+    /// - Returns: An `Int` representing the points earned by popping this type of bubble.
     static func score(for type: BubbleType) -> Int {
           switch type {
           case .red: return 1

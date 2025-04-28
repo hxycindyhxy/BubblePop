@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// The entry view of the app, displaying the main menu with navigation options.
 struct ContentView: View {
     @EnvironmentObject var timerViewModel: TimerViewModel
     @EnvironmentObject var playerViewModel: PlayerViewModel
@@ -25,12 +26,13 @@ struct ContentView: View {
                     Spacer()
                     
                     Text("BubblePop")
-                        .font(.largeTitle.bold())
+                        .font(.system(size: 45, weight: .bold))
                         .foregroundColor(Color(red: 0.0078, green: 0.1882, blue: 0.2863))
                         .padding()
                     
                     Spacer()
                     
+                    /// Navigation link to the game setting view
                     NavigationLink(destination: SettingView()) {
                         Text("Play")
                             .font(.title2)
@@ -41,6 +43,7 @@ struct ContentView: View {
                         playerViewModel.resetCurrentPlayer()
                     }
                     
+                    /// Navigation link to the high score leaderboard view
                     NavigationLink(destination: MainHighScoreView()) {
                         Text("High Score")
                             .font(.title2)

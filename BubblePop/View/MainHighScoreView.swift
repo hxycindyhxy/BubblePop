@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// A view that displays the top 10 highest scores in the game.
 struct MainHighScoreView: View {
     @EnvironmentObject var playerViewModel: PlayerViewModel
     @EnvironmentObject var timerViewModel: TimerViewModel
@@ -32,6 +33,7 @@ struct MainHighScoreView: View {
                     
                     Spacer()
                     
+                    /// List displaying the top 10 players and their scores
                     List {
                         ForEach(playerViewModel.topTenPlayers) {player in
                             HStack{
@@ -47,15 +49,6 @@ struct MainHighScoreView: View {
                     }
                     .scrollContentBackground(.hidden)
                     .background(Color.clear)
-                    
-                    
-                    Spacer()
-                    
-                    NavigationLink(destination: ContentView()) {
-                        Text("Play Again")
-                            .font(.title2.bold())
-                            
-                    }
                 }
             }
         }

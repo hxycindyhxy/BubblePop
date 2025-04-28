@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// A view that allows the player to set their name, game time, and maximum bubbles before starting the game.
 struct SettingView: View {
     @State private var maxBubble: Double = 15
     @State private var gameStarted = false
@@ -26,7 +27,7 @@ struct SettingView: View {
                 .ignoresSafeArea(.all)
             VStack{
                 
-                ///Enter Player Name
+                /// Enter Player Name
                 Text("Player Name")
                     .font(.title)
                     .foregroundColor(Color(red: 0.0078, green: 0.1882, blue: 0.2863))
@@ -43,7 +44,7 @@ struct SettingView: View {
                 
                 Spacer().frame(height: 70)
                 
-                ///Enter Playing Time
+                /// Enter Playing Time
                 Text("Game Time: \(Int(gameTime))")
                     .font(.title2)
                     .foregroundColor(Color(red: 0.0078, green: 0.1882, blue: 0.2863))
@@ -60,7 +61,7 @@ struct SettingView: View {
                 
                 Spacer().frame(height: 30)
                 
-                ///Enter Max Bubble
+                /// Enter maximum bubble displayed numbers
                 Text("Max Bubble on Screen: \(Int(maxBubble))")
                     .font(.title2)
                     .foregroundColor(Color(red: 0.0078, green: 0.1882, blue: 0.2863))
@@ -74,22 +75,23 @@ struct SettingView: View {
                 
                 Spacer().frame(height: 80)
                 
-                ///Play Game Button
+                /// Play game button
                 Button {
-                        playerViewModel.addNewPlayer(name: playerName, score: 0)
-                        gameStarted = true
-                    } label: {
-                        Text("Play")
-                            .padding()
-                            .font(.title .bold())
-                            .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
+                    playerViewModel.addNewPlayer(name: playerName, score: 0)
+                    gameStarted = true
+                } label: {
+                    Text("Play")
+                        .padding()
+                        .font(.title .bold())
+                        .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
+                }
+                .padding()
+                .simultaneousGesture(TapGesture().onEnded {
+                    /// If the player name is empty, default it to "Unknown"
+                    if playerName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        playerName = "Unknown"
                     }
-                    .padding()
-                    .simultaneousGesture(TapGesture().onEnded {
-                        if playerName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                            playerName = "Unknown"
-                        }
-                    })
+                })
             }
             .environmentObject(timerViewModel)
             .environmentObject(playerViewModel)
@@ -97,8 +99,9 @@ struct SettingView: View {
         }
         .ignoresSafeArea(.keyboard)
         .onAppear {
-                playerName = ""
-            }
+            /// Clear the player name when the view appears
+            playerName = ""
+        }
         .navigationDestination(isPresented: $gameStarted) {
             GameView(gameTime: $gameTime, maxBubble: $maxBubble)
                 .environmentObject(playerViewModel)

@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-
+// ViewModel responsible for managing the countdown timer during the game.
 class TimerViewModel:ObservableObject {
     @Published var remainTime: Int = 0
     @Published var isCountingDown = false
@@ -17,6 +17,9 @@ class TimerViewModel:ObservableObject {
     
     private var timer: AnyCancellable?
     
+    //0. Setup the Game Time Timer.
+    /// Initializes and starts the countdown timer based on the provided game time.
+    /// - Parameter gameTime: The total game time in seconds.
     func initTimer(gameTime: Double) {
         remainTime = Int(gameTime)
         isFinished = false
