@@ -9,6 +9,8 @@ import SwiftUI
 
 struct MainHighScoreView: View {
     @EnvironmentObject var playerViewModel: PlayerViewModel
+    @EnvironmentObject var timerViewModel: TimerViewModel
+    @EnvironmentObject var gameViewModel: GameViewModel
     
     @Environment(\.dismiss) private var dismiss
     
@@ -31,7 +33,7 @@ struct MainHighScoreView: View {
                     Spacer()
                     
                     List {
-                        ForEach(playerViewModel.players) {player in
+                        ForEach(playerViewModel.topTenPlayers) {player in
                             HStack{
                                 Text("\(player.name)")
                                     .font(.title3)
@@ -51,16 +53,22 @@ struct MainHighScoreView: View {
                     
                     NavigationLink(destination: ContentView()) {
                         Text("Play Again")
+                            .font(.title2.bold())
+                            
                     }
                 }
             }
         }
         .tint(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
         .environmentObject(playerViewModel)
+        .environmentObject(timerViewModel)
+        .environmentObject(gameViewModel)
     }
 }
 
 #Preview {
     MainHighScoreView()
         .environmentObject(PlayerViewModel())
+        .environmentObject(TimerViewModel())
+        .environmentObject(GameViewModel())
 }

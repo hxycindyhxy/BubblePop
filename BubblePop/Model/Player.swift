@@ -7,8 +7,8 @@
 
 import Foundation
 
-class Player: ObservableObject, Identifiable {
-    let id = UUID()
+class Player: Codable, ObservableObject, Identifiable {
+    var id = UUID()
     var name: String
     var score: Int
     

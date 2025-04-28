@@ -11,7 +11,6 @@ import Combine
 
 
 class TimerViewModel:ObservableObject {
-//    @Published var gameTime: Double = 60
     @Published var remainTime: Int = 0
     @Published var isCountingDown = false
     @Published var isFinished = false
@@ -19,15 +18,16 @@ class TimerViewModel:ObservableObject {
     private var timer: AnyCancellable?
     
     func initTimer(gameTime: Double) {
-        isFinished = false
         remainTime = Int(gameTime)
+        isFinished = false
         isCountingDown = true
         
-        timer = Timer.publish(every: 1, on: .main, in: .common)
-                    .autoconnect()
-                    .sink { [weak self] _ in
-                        self?.updateTimer()
-                    }
+        timer = Timer
+            .publish(every: 1, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                self?.updateTimer()
+            }
     }
     
     ///Update every second
@@ -40,10 +40,9 @@ class TimerViewModel:ObservableObject {
         }
     }
     
-    // 停止计时器
-        private func stopTimer() {
-            timer?.cancel()
-            isCountingDown = false
-        }
-    
+    ///Stop the timer
+   func stopTimer() {
+        timer?.cancel()
+        isCountingDown = false
+    }
 }

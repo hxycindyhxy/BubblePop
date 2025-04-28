@@ -10,6 +10,9 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var timerViewModel: TimerViewModel
     @EnvironmentObject var playerViewModel: PlayerViewModel
+    @EnvironmentObject var gameViewModel: GameViewModel
+    
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         NavigationStack {
@@ -53,6 +56,7 @@ struct ContentView: View {
         .tint(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
         .environmentObject(timerViewModel)
         .environmentObject(playerViewModel)
+        .environmentObject(gameViewModel)
     }
 }
 
@@ -60,5 +64,6 @@ struct ContentView: View {
     ContentView()
         .environmentObject(TimerViewModel())
         .environmentObject(PlayerViewModel())
+        .environmentObject(GameViewModel())
 }
 

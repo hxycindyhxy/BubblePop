@@ -15,6 +15,7 @@ struct SettingView: View {
     
     @EnvironmentObject var playerViewModel: PlayerViewModel
     @EnvironmentObject var timerViewModel: TimerViewModel
+    @EnvironmentObject var gameViewModel: GameViewModel
     
     @Environment(\.dismiss) private var dismiss
     
@@ -22,7 +23,7 @@ struct SettingView: View {
         ZStack{
             Rectangle()
                 .fill(Color(red: 0.976, green: 0.961, blue: 0.878))
-                .ignoresSafeArea()
+                .ignoresSafeArea(.all)
             VStack{
                 
                 ///Enter Player Name
@@ -84,22 +85,31 @@ struct SettingView: View {
                             .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
                     }
                     .padding()
+                    .simultaneousGesture(TapGesture().onEnded {
+                        if playerName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                            playerName = "Unknown"
+                        }
+                    })
             }
             .environmentObject(timerViewModel)
             .environmentObject(playerViewModel)
+            .environmentObject(gameViewModel)
         }
+        .ignoresSafeArea(.keyboard)
         .onAppear {
                 playerName = ""
             }
         .navigationDestination(isPresented: $gameStarted) {
-            GameView(gameTime: $gameTime)
+            GameView(gameTime: $gameTime, maxBubble: $maxBubble)
                 .environmentObject(playerViewModel)
         }
     }
+    
 }
 
 #Preview {
     SettingView()
         .environmentObject(TimerViewModel())
         .environmentObject(PlayerViewModel())
+        .environmentObject(GameViewModel())
 }

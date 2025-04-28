@@ -7,83 +7,128 @@
 
 import SwiftUI
 
-struct GameView: View {
+struct GameView: View {    
     @Binding var gameTime: Double
+    @Binding var maxBubble: Double
+    @State private var showHighScore = false
     @EnvironmentObject var timerViewModel: TimerViewModel
     @EnvironmentObject var playerViewModel: PlayerViewModel
+    @EnvironmentObject var gameViewModel: GameViewModel
+    
+//    let gameAreaSize = CGSize(width: 372, height: 650)
+    
     
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-            ZStack{
-                Rectangle()
-                    .fill(Color(red: 0.976, green: 0.961, blue: 0.878))
-                    .ignoresSafeArea()
-                VStack{
-                    HStack{
-                        VStack{
-                            Text("Time")
-                                .font(.title3)
-                                .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
-                            Text(String(Int(timerViewModel.remainTime)))
-                                .font(.title3 .bold())
-                                .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        
-                        VStack{
-                            Text("Score")
-                                .font(.title3)
-                                .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
-                            Text("0")
-                                .font(.title3 .bold())
-                                .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        
-                        VStack{
-                            Text("Player")
-                                .font(.title3)
-                                .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
-                            Text(playerViewModel.currentPlayer?.name ?? "Unknown")
-                                .font(.title3 .bold())
-                                .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding()
+        ZStack{
+            Rectangle()
+                .fill(Color(red: 0.976, green: 0.961, blue: 0.878))
+                .ignoresSafeArea()
+            VStack{
+                HStack{
+                    VStack{
+                        Text("Time")
+                            .font(.title3)
+                            .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
+                        Text(String(Int(timerViewModel.remainTime)))
+                            .font(.title3 .bold())
+                            .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
                     }
+                    .frame(maxWidth: .infinity)
+                    .padding()
                     
-                    Divider()
-                        .frame(height: 1)
-                        .background(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
-                        .padding(.horizontal, 20)
+                    VStack{
+                        Text("Score")
+                            .font(.title3)
+                            .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
+                        Text("\(gameViewModel.score)")
+                            .font(.title3 .bold())
+                            .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
                     
-                    VStack {
-                        Text("Game in Progress...")
-                            .font(.largeTitle)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    VStack{
+                        Text("Player")
+                            .font(.title3)
+                            .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
+                        Text(playerViewModel.currentPlayer?.name ?? "Unknown")
+                            .font(.title3 .bold())
+                            .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                }
+                
+                Divider()
+                    .frame(height: 1)
+                    .background(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
+                    .padding(.horizontal, 20)
+                
+                GeometryReader { geometry in
+                    ZStack {
+                        ///Test the game area
+//                        Rectangle()
+//                            .strokeBorder(Color.gray, lineWidth: 2)
+//                            .frame(width: geometry.size.width , height: geometry.size.height)
+//                            .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                        
+                        ///Show bubbles
+                        ForEach(gameViewModel.bubbles) { bubble in
+                            Button(action: {
+                                gameViewModel.removeBubble(bubble)
+                            }) {
+                                Circle()
+                                    .fill(BubbleStyle.color(for: bubble.type))
+                                    .frame(width: BubbleStyle.size(for: bubble.type).width,
+                                           height: BubbleStyle.size(for: bubble.type).height)
+                            }
+                            .position(bubble.position)
+                        }
+                    }
+                    .onAppear() {
+                        let availableSize = geometry.size
+                        gameViewModel.setupGrid(size: availableSize)
                     }
                 }
+                .padding()
             }
-            .navigationBarBackButtonHidden(true)
-            .onAppear {
-                timerViewModel.initTimer(gameTime: gameTime)
+        }
+        .onAppear {
+            timerViewModel.initTimer(gameTime: gameTime)
+            
+            gameViewModel.score = 0
+            
+            gameViewModel.stopBubbleTimer()
+            gameViewModel.generateBubbles(numberOfBubbles: Int(maxBubble))
+            gameViewModel.startBubbleTimer(numberOfBubbles: Int(maxBubble))
+        }
+        .onChange(of: timerViewModel.isFinished) {
+            if timerViewModel.isFinished {
+                timerViewModel.stopTimer()
+                playerViewModel.currentPlayer?.score = gameViewModel.score
+                playerViewModel.sortPlayersByScore()
+                showHighScore = true
             }
-            .environmentObject(timerViewModel)
-            .fullScreenCover(isPresented: $timerViewModel.isFinished) {
-                HighScoreView()
-                    .onAppear {
-                        playerViewModel.currentPlayer?.score = 100
-                    }
-            }
+        }
+        .navigationBarBackButtonHidden(true)
+        .environmentObject(timerViewModel)
+        .environmentObject(gameViewModel)
+        .environmentObject(playerViewModel)
+        .fullScreenCover(isPresented: $showHighScore) {
+            HighScoreView()
+                .onAppear {
+                    gameViewModel.stopBubbleTimer()
+                }
+        }
     }
 }
 
 
 #Preview {
-    GameView(gameTime: .constant(60))
+    GameView(gameTime: .constant(60), maxBubble: .constant(15))
         .environmentObject(TimerViewModel())
         .environmentObject(PlayerViewModel())
+        .environmentObject(GameViewModel())
 }

@@ -8,20 +8,14 @@
 import Foundation
 import SwiftUI
 
-enum BubbleType {
-    case red, blue
+enum BubbleType: CaseIterable {
+    case red, pink, green, blue, black
 }
 
 struct Bubble: Identifiable {
     var id: UUID = UUID()
     var type: BubbleType
+    var position: CGPoint
 }
 
-//    var point: Int {
-//        switch type {
-//        case .red: return 1
-//        case .blue: return 8
-//        }
-//    }
-    
-//    var probability: Double
+

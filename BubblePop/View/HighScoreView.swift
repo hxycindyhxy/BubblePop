@@ -10,6 +10,7 @@ import SwiftUI
 struct HighScoreView: View {
     @EnvironmentObject var playerViewModel: PlayerViewModel
     @EnvironmentObject var timerViewModel: TimerViewModel
+    @EnvironmentObject var gameViewModel: GameViewModel
     
     @Environment(\.dismiss) private var dismiss
     
@@ -30,32 +31,37 @@ struct HighScoreView: View {
                         .padding(.horizontal, 20)
                         .padding(.vertical, 10)
                     
-                    Spacer()
+                    Rectangle()
+                        .frame(height: 120)
+                        .opacity(0)
                     
                     VStack{
                         HStack{
                             Text("Your Name:")
-                                .font(.title2)
+                                .font(.title3)
                                 .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
                             Text(playerViewModel.currentPlayer?.name ?? "Unknown")
-                                .font(.title2)
+                                .font(.title3)
                                 .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
                         }
                         
                         HStack{
                             Text("Your Score:")
-                                .font(.title2)
+                                .font(.title3)
                                 .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
-                            Text("0")
-                                .font(.title2)
+                            Text("\(gameViewModel.score)")
+                                .font(.title3)
                                 .foregroundColor(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
                         }
                     }
-                    .padding(.vertical, 20)
+                    .padding(.vertical, 10)
                     
-                    
+                    Rectangle()
+                        .frame(height: 10)
+                        .opacity(0)
+                                        
                     List {
-                        ForEach(playerViewModel.players) {player in
+                        ForEach(playerViewModel.topThreePlayers) {player in
                             HStack{
                                 Text("\(player.name)")
                                     .font(.title3)
@@ -75,6 +81,7 @@ struct HighScoreView: View {
                     
                     NavigationLink(destination: ContentView()) {
                         Text("Play Again")
+                            .font(.title2.bold())
                     }
                 }
             }
@@ -82,6 +89,7 @@ struct HighScoreView: View {
         .tint(Color(red: 0.3451, green: 0.4157, blue: 0.3176))
         .environmentObject(playerViewModel)
         .environmentObject(timerViewModel)
+        .environmentObject(gameViewModel)
     }
 }
 
@@ -89,4 +97,5 @@ struct HighScoreView: View {
     HighScoreView()
         .environmentObject(PlayerViewModel())
         .environmentObject(TimerViewModel())
+        .environmentObject(GameViewModel())
 }
