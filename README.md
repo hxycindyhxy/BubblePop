@@ -64,7 +64,7 @@ A casual bubble-tapping game built using SwiftUI and MVVM architecture. This pro
 
 <br>
 
-🚀 How to Run
+### 🚀 How to Run
 * Clone the repo
 git clone https://github.com/hxycindyhxy/BubblePop.git
 
@@ -92,7 +92,7 @@ git clone https://github.com/hxycindyhxy/BubblePop.git
 
 <br>
 
-💼 About Me
+### 💼 About Me
 
 A passionate coder, designer, team player and lifelong learner. 👩🏻‍🌾
 
