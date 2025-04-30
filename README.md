@@ -1,5 +1,4 @@
-### 🧩 BubblePop 
-— A SwiftUI Game Project
+### 🧩 BubblePop — A SwiftUI Game Project
 
 A casual bubble-tapping game built using SwiftUI and MVVM architecture. This project demonstrates strong skills in animation, game logic, state management, and UI design — built from scratch as a personal project.
 
