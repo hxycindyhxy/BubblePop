@@ -105,4 +105,4 @@ Strong human-centred design skills developed through experience in landscape arc
 Exceptional communication and leadership skills, refined through a diverse and global career background. 🧚🏻
 
 
-👉 [LinkedIn](https://www.linkedin.com/in/xinyi-cindy-hu-317595308/)
+👉 [LinkedIn](https://www.linkedin.com/in/xinyicindy-hu/)
